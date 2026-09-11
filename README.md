@@ -69,8 +69,8 @@ We built Nomad to make it easier for people to find and purchase camping and out
 
 | **HTTP Method** | **Controller** | **Response** | **URI**        | **Use Case**                     |
 | --------------- | -------------- | -----------: | -------------- | -------------------------------- |
-| POST            | signup         |          201 | `/auth/signup` | Create a new user account        |
-| POST            | login          |          200 | `/auth/login`  | Login with username and password |
+| POST            | signup         |          201 | `/auth/sign-up` | Create a new user account        |
+| POST            | login          |          200 | `/auth/sign-in`  | Login with email and password |
 
 ### User Routes
 
