@@ -2,7 +2,19 @@ const Product = require('../models/product');
 
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category');
+    const { search, category } = req.query;
+
+    const filter = {};
+
+    if (search) {
+      filter.name = { $regex: search, $options: 'i' };
+    }
+
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await Product.find(filter).populate('category');
 
     res.status(200).json(products);
   } catch (err) {
