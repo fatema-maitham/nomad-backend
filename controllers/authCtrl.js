@@ -2,27 +2,31 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const SALT_ROUDS = 10;
+const SALT_ROUNDS = 10;
 
 const signup = async (req, res) => {
   try {
-    // verify if the username alrady exists
-    const userInDatabase = await User.findOne({ username: req.body.username });
+    // verify if the email already exists
+    const userInDatabase = await User.findOne({ email: req.body.email });
+
     // if the user exists send error msg
     if (userInDatabase) {
       return res.status(409).json({ err: 'Invalid input' });
     }
 
     // Encrypt the password
-    const hashedPassword = bcrypt.hashSync(req.body.password, SALT_ROUDS);
+    const hashedPassword = bcrypt.hashSync(req.body.password, SALT_ROUNDS);
     req.body.password = hashedPassword;
 
     // else lets check if the password match
     // if password matches create the new user
     const user = await User.create(req.body);
+
     const payload = {
-      username: user.username,
+      name: user.name,
+      email: user.email,
       _id: user._id,
+      role: user.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
@@ -36,7 +40,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const userInDatabase = await User.findOne({ username: req.body.username });
+    const userInDatabase = await User.findOne({ email: req.body.email });
 
     // only allow users that exist to login
     if (!userInDatabase) {
@@ -51,9 +55,12 @@ const login = async (req, res) => {
     // There is a user AND they had the correct password. Time to make a session!
     // Avoid storing the password, even in hashed format, in the session
     // If there is other data you want to save to `req.session.user`, do so here!
+
     const payload = {
-      username: userInDatabase.username,
+      name: userInDatabase.name,
+      email: userInDatabase.email,
       _id: userInDatabase._id,
+      role: userInDatabase.role,
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET);
@@ -61,7 +68,6 @@ const login = async (req, res) => {
     res.json({ token });
   } catch (error) {
     console.log(error.message);
-
     res.status(500).json({ err: error.message });
   }
 };
