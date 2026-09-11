@@ -14,6 +14,7 @@ const isSignedIn = require('./middleware/isSignedIn');
 // Routers
 const authRouter = require('./routes/authRouter');
 const userRouter = require('./routes/userRouter');
+const categoryRouter = require('./routes/categoryRouter');
 
 app.use(cors());
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use('/auth', authRouter);
 app.use(isSignedIn);
 
 app.use('/users', userRouter);
+app.use('/categories', categoryRouter);
 
 app.get('/protected', (req, res) => {
   try {
