@@ -11,6 +11,18 @@ const getCategories = async (req, res) => {
   }
 };
 
+const createCategory = async (req, res) => {
+  try {
+    const category = await Category.create(req.body);
+
+    res.status(201).json(category);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).json({ err: err.message });
+  }
+};
+
 module.exports = {
   getCategories,
+  createCategory,
 };
