@@ -1,11 +1,25 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  username: {
+  role: {
+    type: String,
+    enum: ['customer', 'admin'],
+    default: 'customer',
+  },
+  name: {
     type: String,
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   password: {
+    type: String,
+    required: true,
+  },
+  contact: {
     type: String,
     required: true,
   },
@@ -14,8 +28,6 @@ const userSchema = new mongoose.Schema({
 userSchema.set('toJSON', {
   transform: (document, userObj) => {
     delete userObj.password;
-    // we can add any field we want here that is not on the model
-    // computed fields
   },
 });
 
