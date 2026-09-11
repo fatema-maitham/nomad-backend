@@ -57,11 +57,11 @@ We built Nomad to make it easier for people to find and purchase camping and out
 
 ## ERD
 
-![ERD](./plan/erd.png)
+
 
 ## Wireframes
 
-![Wireframes](./plan/wireframes.png)
+
 
 ## Routes
 
